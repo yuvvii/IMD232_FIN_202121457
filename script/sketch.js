@@ -196,7 +196,7 @@ function draw() {
   let targetX = map(
     activeParticles,
     0,
-    300,
+    350,
     160 * canvasRatio,
     600 * canvasRatio
   );
