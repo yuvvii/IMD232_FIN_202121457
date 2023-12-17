@@ -11,7 +11,7 @@ function setup() {
   setCanvasContainer('canvas', oWidth, oHeight, true);
 
   // A 도형 초기 설정
-  aShapeX = width / oWidth + 40 * (width / oWidth);
+  aShapeX = width / oWidth;
   aShapeY = (540 * height) / oHeight;
 }
 
@@ -83,9 +83,9 @@ function draw() {
     let x = (182 + i * 61) * canvasRatio;
     let y = aShapeY * canvasRatio;
     drawCircle2(
-      (182 + i * 61) * canvasRatio,
-      (aShapeY + 160) * canvasRatio,
-      18 * canvasRatio
+      (80 + i * 61) * canvasRatio,
+      aShapeY * canvasRatio,
+      15 * canvasRatio
     );
   }
 
@@ -100,7 +100,7 @@ function draw() {
   ];
 
   for (let coord of ellipseCoords) {
-    let x = coord.x * canvasRatio + 40;
+    let x = coord.x * canvasRatio + 20;
     let y = coord.y * canvasRatio - 70 * canvasRatio; // 수정된 부분
     let diameter = 32 * canvasRatio;
     ellipse(x, y, diameter, diameter);
@@ -110,9 +110,9 @@ function draw() {
   noStroke();
   fill('#FFEE72');
   rect(
-    (aShapeX - 300) * canvasRatio,
+    (aShapeX - 320) * canvasRatio,
     aShapeY * canvasRatio,
-    600 * canvasRatio,
+    700 * canvasRatio,
     40 * canvasRatio
   );
 
@@ -198,16 +198,15 @@ function draw() {
     0,
     300,
     160 * canvasRatio,
-    800 * canvasRatio
+    600 * canvasRatio
   );
-  aShapeX += (targetX - aShapeX) * 0.05;
 
-  aShapeX = constrain(aShapeX, 160 * canvasRatio, 800 * canvasRatio);
+  // 부드러운 이동을 위해 값의 변화를 작게 조절
+  let easing = 0.1;
+  let deltaX = (targetX - aShapeX) * easing;
+  aShapeX += deltaX;
 
-  // // 스케치북 구멍
-  // for (let i = 0; i < 11; i++) {
-  //   drawCircle(80 + i * 60 * canvasRatio, 80 * canvasRatio, 30 * canvasRatio);
-  // }
+  aShapeX = constrain(aShapeX, 160 * canvasRatio, 600 * canvasRatio);
 
   //가로로 길게 용수철처럼 구불거리는 선 그리기
   drawWavyLine(
@@ -217,12 +216,6 @@ function draw() {
     0.1 * canvasRatio,
     15 * canvasRatio
   );
-}
-
-function drawCircle(x, y, diameter) {
-  fill('#FFC272');
-  noStroke(0);
-  ellipse(x, y, diameter, diameter);
 }
 
 function drawCircle2(x, y, diameter) {
@@ -302,35 +295,24 @@ class CustomParticle {
   }
 }
 
-function isInsideRect(x, y, rectX, rectY, rectWidth, rectHeight) {
-  return (
-    x > rectX - rectWidth / 2 &&
-    x < rectX + rectWidth / 2 &&
-    y > rectY - rectHeight / 2 &&
-    y < rectY + rectHeight / 2 - 20
-  );
-}
 function mouseMoved() {
   // 마우스가 캔버스 내부에 있는 경우에만 새로운 파티클 생성
   if (isMouseInsideCanvas() && random() > 0.5) {
-    let constrainedY = constrain(
-      mouseY,
-      height / 2 - rectHeight / 2 + 50,
-      height / 2 + rectHeight / 2 - 230
-    );
+    let yOffset = 75 * (height / oHeight); // 높이에 비례한 값을 계산
+    let canvasRatio = min(width / oWidth, height / oHeight);
 
-    if (constrainedY !== mouseY) {
-      return; // y 좌표가 제한되었다면 함수를 빠져나감
-    }
+    // 파티클이 생성될 영역을 네모 내부로 제한
+    let minX = width / 2 - rectWidth / 2 + 30 * canvasRatio;
+    let maxX = width / 2 + rectWidth / 2 - 30 * canvasRatio;
+    let minY = height / 2 - rectHeight / 2;
+    let maxY = height / 2 + rectHeight / 2 - 90;
 
-    let particle = new CustomParticle(
-      constrain(
-        mouseX,
-        width / 2 - rectWidth / 2 + 30,
-        width / 2 + rectWidth / 2 - 30
-      ),
-      constrainedY
-    );
+    // 마우스 위치에 따라 파티클 생성
+    let particleX = constrain(mouseX, minX, maxX);
+    let particleY = constrain(mouseY, minY, maxY);
+
+    // aShapeX의 초기값을 기준으로 파티클 생성
+    let particle = new CustomParticle(particleX, particleY);
     particles.push(particle);
     mouse.pixelRatio = (pixelDensity() * width) / oWidth;
   }
