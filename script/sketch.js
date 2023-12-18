@@ -110,7 +110,7 @@ function draw() {
   noStroke();
   fill('#FFEE72');
   rect(
-    (aShapeX - 320) * canvasRatio,
+    (aShapeX - 340) * canvasRatio,
     aShapeY * canvasRatio,
     700 * canvasRatio,
     40 * canvasRatio
@@ -206,7 +206,7 @@ function draw() {
   let deltaX = (targetX - aShapeX) * easing;
   aShapeX += deltaX;
 
-  aShapeX = constrain(aShapeX, 160 * canvasRatio, 600 * canvasRatio);
+  aShapeX = constrain(aShapeX, 160 * canvasRatio, 520 * canvasRatio);
 
   //가로로 길게 용수철처럼 구불거리는 선 그리기
   drawWavyLine(
