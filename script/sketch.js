@@ -12,7 +12,7 @@ function setup() {
 
   // A 도형 초기 설정
   aShapeX = width / oWidth;
-  aShapeY = (580 * height) / oHeight;
+  aShapeY = (530 * height) / oHeight;
 }
 
 function draw() {
