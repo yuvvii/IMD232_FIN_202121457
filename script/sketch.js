@@ -1,8 +1,8 @@
 let particles = [];
 const oWidth = 800;
-const oHeight = 700;
+const oHeight = 650;
 let rectWidth = (oWidth / 800) * 700; // 네모의 가로 길이
-let rectHeight = (oWidth / 800) * 550; // 네모의 세로 길이
+let rectHeight = (oWidth / 800) * 500; // 네모의 세로 길이
 
 let aShapeX; // A 도형의 x 좌표
 let aShapeY; // A 도형의 y 좌표
@@ -12,7 +12,7 @@ function setup() {
 
   // A 도형 초기 설정
   aShapeX = width / oWidth;
-  aShapeY = (540 * height) / oHeight;
+  aShapeY = (580 * height) / oHeight;
 }
 
 function draw() {
@@ -27,7 +27,7 @@ function draw() {
   // 캔버스 비율 적용
   rectMode(CENTER);
   let canvasRatio = min(width / oWidth, height / oHeight);
-  let yOffset = 75 * (height / oHeight); // 높이에 비례한 값을 계산
+  let yOffset = 80 * (height / oHeight); // 높이에 비례한 값을 계산
   rect(
     width / 2,
     height / 2 - 0.5 * yOffset,
@@ -45,7 +45,7 @@ function draw() {
       activeParticles++;
     }
 
-    if (millis() - particles[i].startTime > 2000) {
+    if (millis() - particles[i].startTime > 1000) {
       particles[i].color.levels[3] -= 2;
       particles[i].color.levels[3] = constrain(
         particles[i].color.levels[3],
@@ -101,7 +101,7 @@ function draw() {
 
   for (let coord of ellipseCoords) {
     let x = coord.x * canvasRatio + 20;
-    let y = coord.y * canvasRatio - 70 * canvasRatio; // 수정된 부분
+    let y = coord.y * canvasRatio - 120 * canvasRatio; // 수정된 부분
     let diameter = 32 * canvasRatio;
     ellipse(x, y, diameter, diameter);
   }
@@ -294,26 +294,29 @@ class CustomParticle {
     pop();
   }
 }
-
 function mouseMoved() {
-  // 마우스가 캔버스 내부에 있는 경우에만 새로운 파티클 생성
-  if (isMouseInsideCanvas() && random() > 0.5) {
-    let yOffset = 75 * (height / oHeight); // 높이에 비례한 값을 계산
-    let canvasRatio = min(width / oWidth, height / oHeight);
+  // 전체 캔버스의 크기 비율
+  let canvasRatio = min(width / oWidth, height / oHeight);
 
-    // 파티클이 생성될 영역을 네모 내부로 제한
-    let minX = width / 2 - rectWidth / 2 + 30 * canvasRatio;
-    let maxX = width / 2 + rectWidth / 2 - 30 * canvasRatio;
-    let minY = height / 2 - rectHeight / 2;
-    let maxY = height / 2 + rectHeight / 2 - 90;
+  // 최소 캔버스 크기를 전체 캔버스 크기에 대한 비율로 설정
+  let minCanvasWidth = oWidth * 0.75; // 예시로 전체 캔버스의 75%
+  let minCanvasHeight = oHeight * 0.75; // 예시로 전체 캔버스의 75%
 
-    // 마우스 위치에 따라 파티클 생성
-    let particleX = constrain(mouseX, minX, maxX);
-    let particleY = constrain(mouseY, minY, maxY);
+  let canvasWidth = min(width, minCanvasWidth);
+  let canvasHeight = (canvasWidth / 6) * 4; // 6:4 비율로 조절
 
-    // aShapeX의 초기값을 기준으로 파티클 생성
-    let particle = new CustomParticle(particleX, particleY);
-    particles.push(particle);
-    mouse.pixelRatio = (pixelDensity() * width) / oWidth;
-  }
+  // 최소 캔버스 크기에 대한 비율로 파티클 생성 범위 조절
+  let minX = width / 2 - rectWidth / 2 + 30 * canvasRatio;
+  let maxX = width / 2 + rectWidth / 2 - 30 * canvasRatio;
+  let minY = height / 2 - rectHeight / 2;
+  let maxY = height / 2 + rectHeight / 2 - 90 * canvasRatio;
+
+  // 마우스 위치에 따라 파티클 생성
+  let particleX = constrain(mouseX, minX, maxX);
+  let particleY = constrain(mouseY, minY, maxY);
+
+  // aShapeX의 초기값을 기준으로 파티클 생성
+  let particle = new CustomParticle(particleX, particleY);
+  particles.push(particle);
+  mouse.pixelRatio = (pixelDensity() * width) / oWidth;
 }
