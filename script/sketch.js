@@ -165,7 +165,7 @@ function draw() {
   );
 
   // A 도형 이동 로직
-  let targetX = map(activeParticles, 0, 350, 160 * canvasR, 600 * canvasR);
+  let targetX = map(activeParticles, 0, 500, 160 * canvasR, 600 * canvasR);
 
   // 부드러운 이동을 위해 값의 변화를 작게 조절
   let easing = 0.1;
