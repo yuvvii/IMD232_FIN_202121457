@@ -26,13 +26,13 @@ function draw() {
 
   // 캔버스 비율 적용
   rectMode(CENTER);
-  let canvasRatio = min(width / oWidth, height / oHeight);
+  let canvasR = min(width / oWidth, height / oHeight);
   let yOffset = 80 * (height / oHeight); // 높이에 비례한 값을 계산
   rect(
     width / 2,
     height / 2 - 0.5 * yOffset,
-    rectWidth * canvasRatio,
-    rectHeight * canvasRatio,
+    rectWidth * canvasR,
+    rectHeight * canvasR,
     20
   );
 
@@ -41,7 +41,7 @@ function draw() {
     particles[i].update();
     particles[i].display();
 
-    if (particles[i].color.levels[3] >= 80) {
+    if (particles[i].color.levels[3] >= 100) {
       activeParticles++;
     }
 
@@ -65,8 +65,8 @@ function draw() {
       let particle = new CustomParticle(
         constrain(
           mouseX,
-          width / 2 - rectWidth / 2 + 30 * canvasRatio,
-          width / 2 + rectWidth / 2 - 30 * canvasRatio
+          width / 2 - rectWidth / 2 + 30 * canvasR,
+          width / 2 + rectWidth / 2 - 30 * canvasR
         ),
         constrain(
           mouseY,
@@ -80,13 +80,9 @@ function draw() {
 
   // 말풍선
   for (let i = 0; i < 10; i++) {
-    let x = (182 + i * 61) * canvasRatio;
-    let y = aShapeY * canvasRatio;
-    drawCircle2(
-      (80 + i * 61) * canvasRatio,
-      aShapeY * canvasRatio,
-      15 * canvasRatio
-    );
+    let x = (182 + i * 61) * canvasR;
+    let y = aShapeY * canvasR;
+    drawCircle2((80 + i * 61) * canvasR, aShapeY * canvasR, 15 * canvasR);
   }
 
   fill('#B6DBEF');
@@ -100,9 +96,9 @@ function draw() {
   ];
 
   for (let coord of ellipseCoords) {
-    let x = coord.x * canvasRatio + 20;
-    let y = coord.y * canvasRatio - 120 * canvasRatio; // 수정된 부분
-    let diameter = 32 * canvasRatio;
+    let x = coord.x * canvasR + 20;
+    let y = coord.y * canvasR - 120 * canvasR; // 수정된 부분
+    let diameter = 32 * canvasR;
     ellipse(x, y, diameter, diameter);
   }
 
@@ -110,111 +106,81 @@ function draw() {
   noStroke();
   fill('#FFEE72');
   rect(
-    (aShapeX - 340) * canvasRatio,
-    aShapeY * canvasRatio,
-    700 * canvasRatio,
-    40 * canvasRatio
+    (aShapeX - 340) * canvasR,
+    aShapeY * canvasR,
+    700 * canvasR,
+    40 * canvasR
   );
 
   fill('#4E1D00');
-  ellipse(
-    (aShapeX + 30) * canvasRatio,
-    (aShapeY - 20) * canvasRatio,
-    20 * canvasRatio
-  );
-  ellipse(
-    (aShapeX - 30) * canvasRatio,
-    (aShapeY - 20) * canvasRatio,
-    20 * canvasRatio
-  );
-  ellipse(
-    (aShapeX - 40) * canvasRatio,
-    (aShapeY - 10) * canvasRatio,
-    20 * canvasRatio
-  );
-  ellipse(
-    (aShapeX + 40) * canvasRatio,
-    (aShapeY - 10) * canvasRatio,
-    20 * canvasRatio
-  );
-  ellipse(
-    (aShapeX - 50) * canvasRatio,
-    (aShapeY + 1) * canvasRatio,
-    15 * canvasRatio
-  );
-  ellipse(
-    (aShapeX + 50) * canvasRatio,
-    (aShapeY + 1) * canvasRatio,
-    15 * canvasRatio
-  );
+  ellipse((aShapeX + 30) * canvasR, (aShapeY - 20) * canvasR, 20 * canvasR);
+  ellipse((aShapeX - 30) * canvasR, (aShapeY - 20) * canvasR, 20 * canvasR);
+  ellipse((aShapeX - 40) * canvasR, (aShapeY - 10) * canvasR, 20 * canvasR);
+  ellipse((aShapeX + 40) * canvasR, (aShapeY - 10) * canvasR, 20 * canvasR);
+  ellipse((aShapeX - 50) * canvasR, (aShapeY + 1) * canvasR, 15 * canvasR);
+  ellipse((aShapeX + 50) * canvasR, (aShapeY + 1) * canvasR, 15 * canvasR);
 
   fill('#FFCAAA');
   ellipse(
-    aShapeX * canvasRatio,
-    (aShapeY + 3) * canvasRatio,
-    60 * canvasRatio,
-    55 * canvasRatio
+    aShapeX * canvasR,
+    (aShapeY + 3) * canvasR,
+    60 * canvasR,
+    55 * canvasR
   );
 
   fill('#4E1D00');
   arc(
-    aShapeX * canvasRatio,
-    aShapeY * canvasRatio,
-    65 * canvasRatio,
-    62 * canvasRatio,
+    aShapeX * canvasR,
+    aShapeY * canvasR,
+    65 * canvasR,
+    62 * canvasR,
     160,
     0.3
   );
   ellipse(
-    (aShapeX + 5) * canvasRatio,
-    (aShapeY + 10) * canvasRatio,
-    4 * canvasRatio,
-    6 * canvasRatio
+    (aShapeX + 5) * canvasR,
+    (aShapeY + 10) * canvasR,
+    4 * canvasR,
+    6 * canvasR
   );
   ellipse(
-    (aShapeX - 5) * canvasRatio,
-    (aShapeY + 10) * canvasRatio,
-    4 * canvasRatio,
-    6 * canvasRatio
+    (aShapeX - 5) * canvasR,
+    (aShapeY + 10) * canvasR,
+    4 * canvasR,
+    6 * canvasR
   );
 
   fill('#FF4D4D');
   ellipse(
-    (aShapeX + 18) * canvasRatio,
-    (aShapeY + 15) * canvasRatio,
-    10 * canvasRatio,
-    8 * canvasRatio
+    (aShapeX + 18) * canvasR,
+    (aShapeY + 15) * canvasR,
+    10 * canvasR,
+    8 * canvasR
   );
   ellipse(
-    (aShapeX - 18) * canvasRatio,
-    (aShapeY + 15) * canvasRatio,
-    10 * canvasRatio,
-    8 * canvasRatio
+    (aShapeX - 18) * canvasR,
+    (aShapeY + 15) * canvasR,
+    10 * canvasR,
+    8 * canvasR
   );
 
   // A 도형 이동 로직
-  let targetX = map(
-    activeParticles,
-    0,
-    350,
-    160 * canvasRatio,
-    600 * canvasRatio
-  );
+  let targetX = map(activeParticles, 0, 350, 160 * canvasR, 600 * canvasR);
 
   // 부드러운 이동을 위해 값의 변화를 작게 조절
   let easing = 0.1;
   let deltaX = (targetX - aShapeX) * easing;
   aShapeX += deltaX;
 
-  aShapeX = constrain(aShapeX, 160 * canvasRatio, 520 * canvasRatio);
+  aShapeX = constrain(aShapeX, 160 * canvasR, 520 * canvasR);
 
   //가로로 길게 용수철처럼 구불거리는 선 그리기
   drawWavyLine(
-    90 * canvasRatio,
-    30 * canvasRatio,
-    626 * canvasRatio,
-    0.1 * canvasRatio,
-    15 * canvasRatio
+    90 * canvasR,
+    30 * canvasR,
+    626 * canvasR,
+    0.1 * canvasR,
+    15 * canvasR
   );
 }
 
@@ -296,7 +262,7 @@ class CustomParticle {
 }
 function mouseMoved() {
   // 전체 캔버스의 크기 비율
-  let canvasRatio = min(width / oWidth, height / oHeight);
+  let canvasR = min(width / oWidth, height / oHeight);
 
   // 최소 캔버스 크기를 전체 캔버스 크기에 대한 비율로 설정
   let minCanvasWidth = oWidth * 0.75; // 예시로 전체 캔버스의 75%
@@ -306,10 +272,10 @@ function mouseMoved() {
   let canvasHeight = (canvasWidth / 6) * 4; // 6:4 비율로 조절
 
   // 최소 캔버스 크기에 대한 비율로 파티클 생성 범위 조절
-  let minX = width / 2 - rectWidth / 2 + 30 * canvasRatio;
-  let maxX = width / 2 + rectWidth / 2 - 30 * canvasRatio;
+  let minX = width / 2 - rectWidth / 2 + 30 * canvasR;
+  let maxX = width / 2 + rectWidth / 2 - 30 * canvasR;
   let minY = height / 2 - rectHeight / 2;
-  let maxY = height / 2 + rectHeight / 2 - 90 * canvasRatio;
+  let maxY = height / 2 + rectHeight / 2 - 90 * canvasR;
 
   // 마우스 위치에 따라 파티클 생성
   let particleX = constrain(mouseX, minX, maxX);
