@@ -245,14 +245,14 @@ class CustomParticle {
     // 주어진 도형의 파티클 그리기
     push();
     translate(this.x, this.y);
-    rotate(radians(90));
+    rotate(radians(190));
 
     // 캔버스 크기에 따라 비율 계산
     let sizeRatio = (width / oWidth) * 0.8;
     let shapeGap = 0.000001 * sizeRatio; // 도형 간격
 
     for (let i = 0; i < this.numShapes; i++) {
-      rotate(radians(60));
+      rotate(radians(0));
       ellipse(
         (this.baseSize + shapeGap * i) * sizeRatio,
         0,
