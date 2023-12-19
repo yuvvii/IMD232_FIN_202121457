@@ -20,11 +20,10 @@ function draw() {
 
   let activeParticles = 0;
 
-  // 네모 그리기
+  // 스케치북 네모 그리기
   fill('#FFEDDD');
   noStroke();
 
-  // 캔버스 비율 적용
   rectMode(CENTER);
   let canvasR = min(width / oWidth, height / oHeight);
   let yOffset = 80 * (height / oHeight); // 높이에 비례한 값을 계산
@@ -86,25 +85,28 @@ function draw() {
   }
 
   fill('#B6DBEF');
-  let ellipseCoords = [
-    { x: 670, y: 730 + 10 - 30 },
-    { x: 650, y: 730 - 15 - 30 },
-    { x: 685, y: 730 + 2 - 30 },
-    { x: 650, y: 730 + 10 - 30 },
-    { x: 640, y: 730 + 5 - 30 },
-    { x: 667, y: 730 - 15 - 30 },
+  let cloud = [
+    { x: 675, y: 710 },
+    { x: 680, y: 685 },
+    { x: 695, y: 702 },
+    { x: 650, y: 710 },
+    { x: 660, y: 690 },
+    { x: 667, y: 785 },
   ];
 
-  for (let coord of ellipseCoords) {
+  // 말풍선 꼬리
+  for (let coord of cloud) {
     let x = coord.x * canvasR + 20;
     let y = coord.y * canvasR - 120 * canvasR; // 수정된 부분
     let diameter = 32 * canvasR;
     ellipse(x, y, diameter, diameter);
   }
 
-  // A 도형 그리기
+  // shapeA 그리기
   noStroke();
   fill('#FFEE72');
+
+  // 가려지는 면
   rect(
     (aShapeX - 340) * canvasR,
     aShapeY * canvasR,
@@ -112,6 +114,7 @@ function draw() {
     40 * canvasR
   );
 
+  //kid
   fill('#4E1D00');
   ellipse((aShapeX + 30) * canvasR, (aShapeY - 20) * canvasR, 20 * canvasR);
   ellipse((aShapeX - 30) * canvasR, (aShapeY - 20) * canvasR, 20 * canvasR);
@@ -164,7 +167,7 @@ function draw() {
     8 * canvasR
   );
 
-  // A 도형 이동 로직
+  // shapeA 이동 로직
   let targetX = map(activeParticles, 0, 550, 160 * canvasR, 600 * canvasR);
 
   // 부드러운 이동을 위해 값의 변화를 작게 조절
@@ -174,7 +177,7 @@ function draw() {
 
   aShapeX = constrain(aShapeX, 160 * canvasR, 520 * canvasR);
 
-  //가로로 길게 용수철처럼 구불거리는 선 그리기
+  //스케치북 용수철모양
   drawWavyLine(
     90 * canvasR,
     30 * canvasR,
@@ -182,12 +185,6 @@ function draw() {
     0.1 * canvasR,
     15 * canvasR
   );
-}
-
-function drawCircle2(x, y, diameter) {
-  fill('#B6DBEF');
-  noStroke(0);
-  ellipse(x, y, diameter, diameter);
 }
 
 function drawWavyLine(x, y, length, frequency, amplitude) {
@@ -202,6 +199,12 @@ function drawWavyLine(x, y, length, frequency, amplitude) {
     vertex(xpos, ypos);
   }
   endShape();
+}
+
+function drawCircle2(x, y, diameter) {
+  fill('#B6DBEF');
+  noStroke(0);
+  ellipse(x, y, diameter, diameter);
 }
 
 // 마우스가 캔버스 내부에 있는지 확인하는 함수
@@ -222,11 +225,11 @@ class CustomParticle {
     );
     this.numShapes = 6; // 도형의 개수
     this.startTime = millis(); // 생성 시간 저장
-    this.baseSize = 11; // 기본 크기
+    this.baseSize = 12; // 기본 크기
   }
 
   update() {
-    // 움직임 로직 추가 (예: 마우스 위치로 이동)
+    // 파티클 흔들리게
     this.x += random(-1, 1);
     this.y += random(-1, 1);
   }
