@@ -13,7 +13,7 @@ function setup() {
   setCanvasContainer('canvas', oWidth, oHeight, true);
 
   // A 도형 초기 설정
-  aShapeX = width / oWidth;
+  aShapeX = oWidth * 0.1;
   aShapeY = oHeight * 0.9;
 }
 
@@ -49,7 +49,7 @@ function draw() {
     console.log('Active Particles', activeParticles);
 
     // 일정시간 지나면 투명도를 줄임
-    if (millis() - particles[i].startTime > 2000) {
+    if (millis() - particles[i].startTime > 1000) {
       particles[i].color.levels[3] -= 2;
       particles[i].color.levels[3] = constrain(
         particles[i].color.levels[3],
@@ -174,14 +174,14 @@ function draw() {
   );
 
   // shapeA 이동 로직
-  let targetX = map(activeParticles, 0, 550, 160 * canvasR, 600 * canvasR);
+  let targetX = map(activeParticles, 0, 250, 160 * canvasR, 500 * canvasR);
 
   // 부드러운 이동을 위해 값의 변화를 작게 조절
-  let easing = 0.1;
+  let easing = 0.2;
   let deltaX = (targetX - aShapeX) * easing;
   aShapeX += deltaX;
 
-  aShapeX = constrain(aShapeX, 160 * canvasR, 520 * canvasR);
+  aShapeX = constrain(aShapeX, 160 * canvasR, 650 * canvasR);
 
   //스케치북 용수철모양
   drawWavyLine(
@@ -260,28 +260,34 @@ class CustomParticle {
   }
 }
 function mouseMoved() {
-  // 전체 캔버스의 크기 비율
-  let canvasR = min(width / oWidth, height / oHeight);
+  // rect의 좌표
+  let rectLeft = width * 0.5 - rectWidth * 0.5;
+  let rectRight = width * 0.5 + rectWidth * 0.5;
+  let rectTop = height * 0.5 - rectHeight * 0.5;
+  let rectBottom = height * 0.5 + rectHeight * 0.5;
 
-  // 최소 캔버스 크기를 전체 캔버스 크기에 대한 비율로 설정
-  let minCanvasWidth = oWidth * 0.75; // 예시로 전체 캔버스의 75%
-  let minCanvasHeight = oHeight * 0.75; // 예시로 전체 캔버스의 75%
-
-  let canvasWidth = min(width, minCanvasWidth);
-  let canvasHeight = (canvasWidth / 6) * 4; // 6:4 비율로 조절
-
-  // 최소 캔버스 크기에 대한 비율로 파티클 생성 범위 조절
-  let minX = width / 2 - rectWidth / 2 + 30 * canvasR;
-  let maxX = width / 2 + rectWidth / 2 - 30 * canvasR;
-  let minY = height / 2 - rectHeight / 2;
-  let maxY = height / 2 + rectHeight / 2 - canvasR * 0.8;
-
-  // 마우스 위치에 따라 파티클 생성
-  let particleX = constrain(mouseX, minX, maxX);
-  let particleY = constrain(mouseY, minY, maxY);
-
-  // aShapeX의 초기값을 기준으로 파티클 생성
-  let particle = new CustomParticle(particleX, particleY);
-  particles.push(particle);
-  mouse.pixelRatio = (pixelDensity() * width) / oWidth;
+  // 마우스 위치가 rect 내에 있는지 확인
+  if (
+    isMouseInsideCanvas() &&
+    mouseX > rectLeft &&
+    mouseX < rectRight &&
+    mouseY > rectTop &&
+    mouseY < rectBottom &&
+    random() > 0.5
+  ) {
+    let particle = new CustomParticle(
+      constrain(
+        mouseX,
+        (width * 0.8) / 2 - width * 0.4,
+        (width * 0.8) / 2 + width * 0.4
+      ),
+      constrain(
+        mouseY,
+        (height * 0.8) / 2 - height * 0.3,
+        (height * 0.8) / 2 + height * 0.3
+      )
+    );
+    particles.push(particle);
+    mouse.pixelRatio = (pixelDensity() * width) / oWidth;
+  }
 }

@@ -1,8 +1,8 @@
 // GPT 활용
 
 let particles = [];
-let oWidth = 800;
-let oHeight = 650;
+const oWidth = 800;
+const oHeight = 650;
 let rectWidth = (oWidth / 800) * 700; // 네모의 가로 길이
 let rectHeight = (oWidth / 800) * 500; // 네모의 세로 길이
 
@@ -42,21 +42,22 @@ function draw() {
     particles[i].update();
     particles[i].display();
 
-    // 투명도가 80 이상인 파티클 감지
     if (particles[i].color.levels[3] >= 80) {
       activeParticles++;
     }
+
     console.log('Active Particles', activeParticles);
 
-    // 일정 시간이 지나면 투명도를 줄여서 사라지게 함
-    if (millis() - particles[i].startTime > 2000) {
+    // 일정시간 지나면 투명도를 줄임
+    if (millis() - particles[i].startTime > 1000) {
       particles[i].color.levels[3] -= 2;
-      particles[i].color.levels[3] = letrain(
+      particles[i].color.levels[3] = constrain(
         particles[i].color.levels[3],
         0,
         255
       );
     }
+
     // 투명도 0 되면 제거
     if (particles[i].color.levels[3] === 0) {
       particles.splice(i, 1);
@@ -67,15 +68,15 @@ function draw() {
   if (isMouseInsideCanvas()) {
     if (random() > 0.5) {
       let particle = new CustomParticle(
-        letrain(
+        constrain(
           mouseX,
-          (width * (80 / 100)) / 2 - width * (70 / 200) + 30,
-          (width * (80 / 100)) / 2 + width * (70 / 200) - 30
+          width / 2 - rectWidth / 2 + 30 * canvasR,
+          width / 2 + rectWidth / 2 - 30 * canvasR
         ),
-        letrain(
+        constrain(
           mouseY,
-          (height * (80 / 100)) / 2 - height * (60 / 200),
-          (height * (80 / 100)) / 2 + height * (60 / 200) - 90
+          height / 2 - rectHeight / 2,
+          height / 2 + rectHeight / 2
         )
       );
       particles.push(particle);
@@ -173,14 +174,14 @@ function draw() {
   );
 
   // shapeA 이동 로직
-  let targetX = map(activeParticles, 0, 550, 160 * canvasR, 600 * canvasR);
+  let targetX = map(activeParticles, 0, 700, 160 * canvasR, 600 * canvasR);
 
   // 부드러운 이동을 위해 값의 변화를 작게 조절
   let easing = 0.1;
   let deltaX = (targetX - aShapeX) * easing;
   aShapeX += deltaX;
 
-  aShapeX = letrain(aShapeX, 160 * canvasR, 520 * canvasR);
+  aShapeX = constrain(aShapeX, 160 * canvasR, 650 * canvasR);
 
   //스케치북 용수철모양
   drawWavyLine(
@@ -219,7 +220,7 @@ function isMouseInsideCanvas() {
 
 // CustomParticle 클래스 정의
 class CustomParticle {
-  letructor(x, y) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
     this.color = color(
@@ -250,20 +251,10 @@ class CustomParticle {
     // 주어진 도형의 파티클 그리기
     push();
     translate(this.x, this.y);
-    rotate(radians(190));
-
-    // 캔버스 크기에 따라 비율 계산
-    let sizeRatio = (width / oWidth) * 0.8;
-    let shapeGap = 0.000001 * sizeRatio; // 도형 간격
 
     for (let i = 0; i < this.numShapes; i++) {
-      rotate(radians(0));
-      ellipse(
-        (this.baseSize + shapeGap * i) * sizeRatio,
-        0,
-        this.baseSize * sizeRatio,
-        10 * sizeRatio
-      );
+      ellipse((width * 8) / 800, 0, (width * 12) / 800, (height * 10) / 700);
+      rotate(radians(60));
     }
     pop();
   }
@@ -273,24 +264,20 @@ function mouseMoved() {
   let canvasR = min(width / oWidth, height / oHeight);
 
   // 최소 캔버스 크기를 전체 캔버스 크기에 대한 비율로 설정
-  let minCanvasWidth = oWidth * 0.75; // 예시로 전체 캔버스의 75%
-  let minCanvasHeight = oHeight * 0.75; // 예시로 전체 캔버스의 75%
-
-  let canvasWidth = min(width, minCanvasWidth);
-  let canvasHeight = (canvasWidth / 6) * 4; // 6:4 비율로 조절
+  let minCanvasWidth = oWidth * 0.75;
+  let minCanvasHeight = oHeight * 0.75;
 
   // 최소 캔버스 크기에 대한 비율로 파티클 생성 범위 조절
   let minX = width / 2 - rectWidth / 2 + 30 * canvasR;
   let maxX = width / 2 + rectWidth / 2 - 30 * canvasR;
   let minY = height / 2 - rectHeight / 2;
-  let maxY = height / 2 + rectHeight / 2 - 90 * canvasR;
+  let maxY = height / 2 + rectHeight / 2 - canvasR * 60;
 
   // 마우스 위치에 따라 파티클 생성
-  let particleX = letrain(mouseX, minX, maxX);
-  let particleY = letrain(mouseY, minY, maxY);
+  let particleX = constrain(mouseX, minX, maxX);
+  let particleY = constrain(mouseY, minY, maxY);
 
   // aShapeX의 초기값을 기준으로 파티클 생성
   let particle = new CustomParticle(particleX, particleY);
   particles.push(particle);
-  mouse.pixelRatio = (pixelDensity() * width) / oWidth;
 }
