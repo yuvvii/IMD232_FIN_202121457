@@ -1,3 +1,5 @@
+// GPT 활용
+
 let particles = [];
 const oWidth = 800;
 const oHeight = 650;
